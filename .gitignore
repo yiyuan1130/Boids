@@ -10,6 +10,8 @@
 /[Ll]ogs/
 /[Mm]emoryCaptures/
 /Assets/XLua/Examples/
+/Assets/XLua/Gen/
+/Assets/XLua/Doc/
 
 # Asset meta data should only be ignored when the corresponding asset is also ignored
 !/[Aa]ssets/**/*.meta
