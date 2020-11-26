@@ -1,0 +1,173 @@
+fileFormatVersion: 2
+guid: 78e78c1b1034d4a4ea0f87c4ca75d5d9
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: a_c_n_pearfengniao01
+    100004: Bip001
+    100006: Bip001 Head
+    100008: Bip001 L Calf
+    100010: Bip001 L Foot
+    100012: Bip001 L Thigh
+    100014: Bip001 L Toe0
+    100016: Bip001 L Toe01
+    100018: Bip001 L Toe1
+    100020: Bip001 L Toe11
+    100022: Bip001 Neck
+    100024: Bip001 Pelvis
+    100026: Bip001 R Calf
+    100028: Bip001 R Foot
+    100030: Bip001 R Thigh
+    100032: Bip001 R Toe0
+    100034: Bip001 R Toe01
+    100036: Bip001 R Toe1
+    100038: Bip001 R Toe11
+    100040: Bip001 Spine
+    100042: Bone001
+    100044: Bone002
+    100046: Bone003
+    100048: Bone004
+    100050: Bone004(mirrored)
+    100052: Bone005
+    100054: Bone005(mirrored)
+    100056: Bone006
+    100058: Bone006(mirrored)
+    100060: Bone007
+    100062: Bone007(mirrored)
+    100064: Bone008
+    100066: Bone008(mirrored)
+    100068: l_yanpi
+    100070: r_yanpi
+    400000: //RootNode
+    400002: a_c_n_pearfengniao01
+    400004: Bip001
+    400006: Bip001 Head
+    400008: Bip001 L Calf
+    400010: Bip001 L Foot
+    400012: Bip001 L Thigh
+    400014: Bip001 L Toe0
+    400016: Bip001 L Toe01
+    400018: Bip001 L Toe1
+    400020: Bip001 L Toe11
+    400022: Bip001 Neck
+    400024: Bip001 Pelvis
+    400026: Bip001 R Calf
+    400028: Bip001 R Foot
+    400030: Bip001 R Thigh
+    400032: Bip001 R Toe0
+    400034: Bip001 R Toe01
+    400036: Bip001 R Toe1
+    400038: Bip001 R Toe11
+    400040: Bip001 Spine
+    400042: Bone001
+    400044: Bone002
+    400046: Bone003
+    400048: Bone004
+    400050: Bone004(mirrored)
+    400052: Bone005
+    400054: Bone005(mirrored)
+    400056: Bone006
+    400058: Bone006(mirrored)
+    400060: Bone007
+    400062: Bone007(mirrored)
+    400064: Bone008
+    400066: Bone008(mirrored)
+    400068: l_yanpi
+    400070: r_yanpi
+    2100000: 'Material #0'
+    2100002: 'Material #2'
+    4300000: a_c_n_pearfengniao01
+    7400000: Take 001
+    9500000: //RootNode
+    13700000: a_c_n_pearfengniao01
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: 'Material #0'
+    second: {fileID: 2100000, guid: d4b823f4170edfb4f9591335620e6a98, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: 'Material #2'
+    second: {fileID: 2100000, guid: d4b823f4170edfb4f9591335620e6a98, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: assets/res/arts/animation/character/npc/a_c_n_pearfengniao01/model/a_c_n_pearfengniao01_fbx.ab
+  assetBundleVariant: 
