@@ -4,7 +4,7 @@ function Bird:ctor(...)
 end
 
 function Bird:Start()
-    self.eye = self.gameObject.transform:Find("Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Neck/Bip001 Head/")
+    self.eye = self.gameObject.transform:Find("Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Neck/Bip001 Head")
     self.rotateSpeed = 100
 end
 
@@ -18,13 +18,13 @@ function Bird:OnDestroy()
 end
 
 function Bird:checkSign()
-    local ray = Ray(self.eye.position, self.eye.position + self.gameObject.transform.forward)
     local hitDis = 5
-    local hit, hitInfo = Physics.Raycast(ray, hitDis, 1 << LayerMask.NameToLayer("Obstacle"))
-    if hit then
-        print(hitInfo)
-        -- print("hit -> ", hitInfo.point)
-    end
+    local startPos = self.eye.position
+    local endPos = self.gameObject.transform:TransformDirection(Vector3.forward) * hitDis
+    -- local ray = Ray(startPos, endPos)
+    local hit, hitInfo = Physics.Raycast(startPos, endPos, hitDis, 1 << LayerMask.NameToLayer("Obstacle"))
+    print(hit, hitInfo)
+    Debug.DrawRay(startPos, endPos, Color.red)
 end
 
 return Bird
