@@ -17,6 +17,7 @@ Physics         = CS.UnityEngine.Physics
 LayerMask       = CS.UnityEngine.LayerMask
 RaycastHit      = CS.UnityEngine.RaycastHit
 Color           = CS.UnityEngine.Color
+Mathf           = CS.UnityEngine.Mathf
 
 SceneManagement = CS.UnityEngine.SceneManagement
 LoadSceneMode   = CS.UnityEngine.SceneManagement.LoadSceneMode
