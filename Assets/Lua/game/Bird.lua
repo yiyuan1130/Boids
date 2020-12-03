@@ -1,6 +1,8 @@
 local Bird = class("Bird")
 
-function Bird:ctor(...)
+function Bird:ctor(controller)
+    self.controller = controller
+    self.velocity = Vector3(0, 0, 1)
 end
 
 function Bird:Start()
@@ -11,14 +13,15 @@ function Bird:Start()
 end
 
 function Bird:Update()
+    self.birds = self.controller.birdIns
     self:findBirds()
     self:move()
     local v1 = self:separation()
     local v2 = self:alignment()
     local v3 = self:cohesion()
-    -- local v4 = self:external()
-    -- self.velocity = (v1 + v2 + v3 + v4) / 4
-    self.velocity = (v1 + v2 + v3) / 3
+    local v4 = self:external()
+    -- self.velocity = (v1 + v2 + v3) / 3
+    self.velocity = (v1 + v2 + v3 + v4) / 4
 end
 
 function Bird:OnDestroy()
@@ -71,9 +74,11 @@ end
 function Bird:alignment()
     local average = Vector3.zero
     local found = 0
-    for i = 1, #self.foundedBirds do
-        average = average + self.foundedBirds[i].velocity
-        found = found + 1
+    if self.foundedBirds and #self.foundedBirds > 0 then
+        for i = 1, #self.foundedBirds do
+            average = average + self.foundedBirds[i].velocity
+            found = found + 1
+        end
     end
     if found > 0 then
         average = average / found
@@ -102,8 +107,9 @@ function Bird:cohesion()
 end
 
 function Bird:external()
+    local ratio = 0.2
     local vect = (self.target.transform.position - self.gameObject.transform.position)
-    local average = Vector3.Lerp(self.velocity, vect, vect.magnitude)
+    local average = Vector3.Lerp(self.velocity, vect, Time.deltaTime) * ratio
     return average
     -- return Vector3.zero
 end
