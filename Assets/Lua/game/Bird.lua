@@ -4,97 +4,112 @@ function Bird:ctor(...)
 end
 
 function Bird:Start()
-    self.eye = self:createEye()
-    self:setupViewPoint()
-    self.rotateSpeed = 1000
-    self.flySpeed = 2
-    -- self:checkSign()
+    self.velocity = self.gameObject.transform.forward * 6
+    self.maxVelocity = 7
+    self.minVelocity = 5
+    self.target = GameObject.Find("target")
 end
 
 function Bird:Update()
-    -- self.gameObject.transform:Rotate(Vector3.up, self.rotateSpeed * Time.fixedDeltaTime)
-    local dir, hit = self:checkSign()
-    
-    if hit then
-        local angle = Vector3.Angle(dir, self.gameObject.transform.forward)
-        local v = Vector3.Dot(dir, self.gameObject.transform.forward)
-        local vect = self.gameObject.transform.up
-        if v < 0 then
-            vect = Vector3(self.gameObject.transform.up.x, self.gameObject.transform.up.y * -1, self.gameObject.transform.up.z)
-        else
-            vect = self.gameObject.transform.up
-        end
-        local expectForward = Vector3.Cross(dir, vect) * -1
-        expectForward = self.eye.transform:TransformDirection(dir).normalized
-        local needRotateAngle = Vector3.Angle(expectForward, self.gameObject.transform.forward)
-        -- local preFrameAngle = needRotateAngle / self.rotateSpeed * Time.fixedDeltaTime
-        local forward = Quaternion.AngleAxis(self.rotateSpeed * Time.fixedDeltaTime, self.gameObject.transform.forward)
-        self.gameObject.transform.forward = forward.eulerAngles
-        Debug.DrawRay(self.eye.position, self.gameObject.transform.forward * 5, Color.yellow)
-    end
-    self.gameObject.transform.position = self.gameObject.transform.position + self.gameObject.transform.forward * self.flySpeed * Time.fixedDeltaTime
+    self:findBirds()
+    self:move()
+    local v1 = self:separation()
+    local v2 = self:alignment()
+    local v3 = self:cohesion()
+    -- local v4 = self:external()
+    -- self.velocity = (v1 + v2 + v3 + v4) / 4
+    self.velocity = (v1 + v2 + v3) / 3
 end
 
 function Bird:OnDestroy()
     
 end
 
-function Bird:createEye()
-    local eye1 = self.gameObject.transform:Find("Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Neck/Bip001 Head/Bone008")
-    local eye2 = self.gameObject.transform:Find("Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Neck/Bip001 Head/Bone008(mirrored)")
-    local eye = GameObject("eye").transform
-    eye:SetParent(eye1.transform.parent)
-    eye.position = (eye1.position + eye2.position) * 0.5
-    return eye
+function Bird:move()
+    if self.velocity.magnitude > self.maxVelocity then
+        self.velocity = self.velocity.normalized * self.maxVelocity
+    end
+    if self.velocity.magnitude < self.minVelocity then
+        self.velocity = self.velocity.normalized * self.minVelocity
+    end
+    self.gameObject.transform.position = self.gameObject.transform.position + self.velocity * Time.deltaTime
+    self.gameObject.transform.rotation = Quaternion.LookRotation(self.velocity)
 end
 
-function Bird:setupViewPoint()
-    self.viewPoints = {}
-    local viewAngle = 120
-    local count = 180
-    local zValue = (90 - viewAngle / 2) / 90
-    for i = 1, count - 1 do
-        local t = i / (count - 1)
-        local inc = Mathf.Acos(1.0 - 2.0 * t)
-        local z = Mathf.Cos(inc)
-        if z > zValue then
-            local az = 2.0 * Mathf.PI * 1.618 * i
-            local x = Mathf.Sin(inc) * Mathf.Cos(az)
-            local y = Mathf.Sin(inc) * Mathf.Sin(az)
-            local dir = Vector3(x,y,z).normalized
-            table.insert(self.viewPoints, Vector3(x,y,z).normalized)
+function Bird:findBirds()
+    local radius = 10
+    self.foundedBirds = {}
+    for _, bird in pairs(self.birds) do
+        if self ~= bird then
+            if Vector3.Distance(bird.gameObject.transform.position, self.gameObject.transform.position) < radius then
+                table.insert(self.foundedBirds, bird)
+            end
         end
     end
 end
 
-function Bird:checkSign()
-    local hitDis = 5
-    self.eye.forward = self.gameObject.transform.forward
-    local points = {}
-    for _, point in pairs(self.viewPoints) do
-        local startPos = self.eye.position
-        local endPos = self.eye.transform:TransformDirection(point) * hitDis
-        Debug.DrawRay(startPos, endPos, Color.red)
-        local ray = Ray(startPos, endPos)
-        local hit, hitInfo = Physics.Raycast(ray, hitDis, 1 << LayerMask.NameToLayer("Obstacle"))
-        if hit then
-            table.insert(points, {
-                point = hitInfo.point,
-                dir = point
-            })
+-- 分离
+function Bird:separation()
+    local radius = 2
+    local force = Vector3.zero
+    local found = 0
+    local forceScale = 15
+    for i = 1, #self.foundedBirds do
+        if Vector3.Distance(self.gameObject.transform.position, self.foundedBirds[i].gameObject.transform.position) < radius then
+            force = force + (self.gameObject.transform.position - self.foundedBirds[i].gameObject.transform.position)
+            found = found + 1
         end
     end
-    local dir = self.gameObject.transform.forward
-    if #points > 0 then
-        table.sort(points, function(a, b)
-            local disA = Vector3.Distance(a.point, self.eye.position)
-            local disB = Vector3.Distance(b.point, self.eye.position)
-            return disA > disB
-        end)
-        dir = points[1].dir
-        Debug.DrawRay(self.eye.position, (points[1].point - self.eye.position).normalized * hitDis, Color.green)
+    if found > 0 then
+        force = force / found * forceScale
+        return Vector3.Lerp(self.velocity, force, Time.deltaTime)
     end
-    return dir, #points > 0
+    return self.velocity
+end
+
+-- 一致性
+function Bird:alignment()
+    local average = Vector3.zero
+    local found = 0
+    for i = 1, #self.foundedBirds do
+        average = average + self.foundedBirds[i].velocity
+        found = found + 1
+    end
+    if found > 0 then
+        average = average / found
+        return Vector3.Lerp(self.velocity, average, Time.deltaTime)
+    end
+    return self.velocity
+end
+
+-- 凝聚力
+function Bird:cohesion()
+    local radius = 5
+    local averagePos = Vector3.zero
+    local found = 0
+    for i = 1, #self.foundedBirds do
+        if Vector3.Distance(self.gameObject.transform.position, self.foundedBirds[i].gameObject.transform.position) > radius then
+            averagePos = averagePos + self.foundedBirds[i].gameObject.transform.position
+            found = found + 1
+        end
+    end
+    if found > 0 then
+        averagePos = averagePos / found
+        local targetVelocity = (averagePos - self.gameObject.transform.position).normalized * self.velocity.magnitude
+        return Vector3.Lerp(self.velocity, targetVelocity, Time.deltaTime)
+    end
+    return self.velocity
+end
+
+function Bird:external()
+    local vect = (self.target.transform.position - self.gameObject.transform.position)
+    local average = Vector3.Lerp(self.velocity, vect, vect.magnitude)
+    return average
+    -- return Vector3.zero
+end
+
+function Bird:moveTest()
+    -- self.velocity = self.velocity + self.gameObject.transform.right
 end
 
 return Bird

@@ -33,8 +33,18 @@ require("core/main")
 -- SceneManager.LoadScene("GameScene", LoadSceneMode.Single)
 
 local Bird = require("game/Bird")
-local go = GameObject.Find("bird1")
-local birdIns = BehaviourUtil.AddBehaviour(go, Bird)
+local birdsP = GameObject.Find("birds").transform
+local birds = {}
+for i = 0, birdsP.childCount - 1 do
+    -- local go = GameObject.Find("bird" .. i)
+    local go = birdsP:GetChild(i).gameObject
+    go.transform.position = go.transform.position + Vector3.one * (math.random() * 2 - 1) * 3
+    local birdIns = BehaviourUtil.AddBehaviour(go, Bird)
+    table.insert(birds, birdIns)
+end
+for _, instances in pairs(birds) do
+    instances.birds = birds
+end
 
 -- local BirdController = require("game/BirdController")
 
